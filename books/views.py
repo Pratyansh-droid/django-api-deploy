@@ -36,4 +36,4 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = [AllowAny]
 
 
-print("PixellPeep")
+print("PixellPeep2026")
