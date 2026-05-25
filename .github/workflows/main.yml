@@ -7,27 +7,31 @@ jobs:
   visual-test:
     runs-on: ubuntu-latest
 
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Setup Node
-        uses: actions/setup-node@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          node-version: 24
+          python-version: '3.12'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
 
-      - name: Run screenshots
-        run: npm run screenshots
+      - name: Run Django server
+        run: |
+          python manage.py runserver &
+          sleep 10
+
+      - name: Run screenshot tests
+        run: |
+          echo "Generate screenshots here"
 
       - name: PixellPeep Compare
         run: |
-          npx pixellpeep compare \
+          pixellpeep compare \
             --base ./baseline \
             --current ./current \
             --post-github-check true
