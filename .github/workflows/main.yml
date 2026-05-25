@@ -11,7 +11,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Python
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -20,12 +25,20 @@ jobs:
         run: |
           pip install -r requirements.txt
 
+      - name: Install PixellPeep CLI
+        run: |
+          npm install -g pixellpeep
+
+      - name: Verify PixellPeep installation
+        run: |
+          pixellpeep --version
+
       - name: Run Django server
         run: |
           python manage.py runserver &
           sleep 10
 
-      - name: Run screenshot tests
+      - name: Generate screenshots
         run: |
           echo "Generate screenshots here"
 
