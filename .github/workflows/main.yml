@@ -1,0 +1,32 @@
+name: Visual Regression
+
+on:
+  pull_request:
+
+jobs:
+  visual-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run screenshots
+        run: npm run screenshots
+
+      - name: PixellPeep Compare
+        run: |
+          npx pixellpeep compare \
+            --base ./baseline \
+            --current ./current \
+            --post-github-check true
+        env:
+          PIXELLPEEP_API_KEY: ${{ secrets.PIXELLPEEP_API_KEY }}
